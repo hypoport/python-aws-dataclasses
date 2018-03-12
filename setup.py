@@ -41,6 +41,6 @@ setup(
         "Source Code": "http://github.com/bweigel/lawip",
     },
 
-    test_suite="lawip.test.test_s3_event"
+    test_suite="lawip.test"
 
 )
