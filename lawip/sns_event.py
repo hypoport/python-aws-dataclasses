@@ -1,13 +1,18 @@
 from collections import namedtuple
-
+from typing import Dict
 
 MessageAttribute = namedtuple("MessageAttribute", ['type', 'value'])
 
 
+def parse_message_attributes(attrs):
+    return {att_name: MessageAttribute(att.get("Type", None),
+                                       att.get("Value", None)) for att_name, att in attrs.items()}
+
+
 class Sns:
     def __init__(self, signature_version: str, timestamp: str, signature: str, signing_cert_url: str,
-                 message_id: str, message: str, subject: str, message_attributes: dict,
-                 type: str, unsubscribe_url: str, topic_arn: str):
+                 message_id: str, message: str, subject: str, message_attributes: Dict[str, MessageAttribute],
+                 type_: str, unsubscribe_url: str, topic_arn: str):
         self._signature_version = signature_version
         self._timestamp = timestamp
         self._signature = signature
@@ -16,12 +21,13 @@ class Sns:
         self._message = message
         self._subject = subject
         self._message_attributes = message_attributes
-        self._type = type
+        self._type = type_
         self._unsubscribe_url = unsubscribe_url
         self._topic_arn = topic_arn
 
     @classmethod
     def from_json(cls, s3):
+        message_attributes = parse_message_attributes(s3["MessageAttributes"])
         return cls(s3["SignatureVersion"],
                    s3["Timestamp"],
                    s3["Signature"],
@@ -29,7 +35,7 @@ class Sns:
                    s3["MessageId"],
                    s3["Message"],
                    s3["Subject"],
-                   s3["MessageAttributes"],
+                   message_attributes,
                    s3["Type"],
                    s3["UnsubscribeUrl"],
                    s3["TopicArn"])
@@ -91,10 +97,10 @@ class SnsRecord:
 
     @classmethod
     def from_json(cls, record):
-        return cls(record["eventVersion"],
+        return cls(record["EventVersion"],
                    record["EventSubscriptionArn"],
                    Sns.from_json(record["Sns"]),
-                   record["eventSource"])
+                   record["EventSource"])
 
     @property
     def event_version(self):
