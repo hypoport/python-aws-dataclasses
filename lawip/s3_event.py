@@ -1,3 +1,5 @@
+from typing import Dict
+
 import arrow
 
 
@@ -91,12 +93,12 @@ class S3():
 class S3Record:
     def __init__(self, event_version: str,
                  event_time: str,
-                 request_params: dict,
+                 request_params: Dict[str, str],
                  s3: S3,
-                 response_elements: dict,
+                 response_elements: Dict[str, str],
                  aws_region: str,
                  event_name: str,
-                 user_identity: dict,
+                 user_identity: Dict[str, str],
                  event_source: str):
         self._event_version = event_version
         self._event_time = arrow.get(event_time)

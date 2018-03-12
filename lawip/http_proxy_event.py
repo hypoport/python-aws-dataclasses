@@ -1,3 +1,5 @@
+from typing import Dict
+
 class Identity:
     def __init__(self,
                  api_key: str,
@@ -104,11 +106,11 @@ class ApiGwProxyEvent:
     def __init__(self, body: str,
                  resource: str,
                  request_context: RequestContext,
-                 query_string_parameters: dict,
-                 headers: dict,
-                 path_parameters: dict,
+                 query_string_parameters: Dict[str, str],
+                 headers: Dict[str, str],
+                 path_parameters: Dict[str, str],
                  http_method: str,
-                 stage_variables: dict,
+                 stage_variables: Dict[str, str],
                  path: str):
         self._body = body
         self._resource = resource
