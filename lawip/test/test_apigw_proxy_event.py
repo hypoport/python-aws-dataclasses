@@ -7,8 +7,8 @@ from lawip.test.util import get_event_dict
 
 class TestProxyEvent(TestCase):
     def setUp(self):
-        config = get_event_dict("apigw-proxy-event.json")
-        self.event = ApiGwProxyEvent.from_event(config)
+        event_dict = get_event_dict("apigw-proxy-event.json")
+        self.event = ApiGwProxyEvent.from_event(event_dict)
 
     def test_object(self):
         evt = self.event

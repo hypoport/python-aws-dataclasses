@@ -6,8 +6,8 @@ from lawip.test.util import get_event_dict
 
 class TestS3Event(TestCase):
     def setUp(self):
-        sample_json = get_event_dict("s3-event.json")
-        self.event = S3Event.from_event(sample_json)
+        event_dict = get_event_dict("s3-event.json")
+        self.event = S3Event.from_event(event_dict)
 
     def test_object(self):
         evt = self.event
