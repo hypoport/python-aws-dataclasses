@@ -1,14 +1,12 @@
-import json
-
-import pkg_resources
 from unittest2 import TestCase
 
 from lawip.s3_event import S3Event
+from lawip.test.util import get_event_dict
 
 
 class TestS3Event(TestCase):
     def setUp(self):
-        sample_json = json.loads(pkg_resources.resource_string(f"{__package__}.resources", "s3-event.json"))
+        sample_json = get_event_dict("s3-event.json")
         self.event = S3Event.from_event(sample_json)
 
     def test_object(self):
