@@ -120,3 +120,4 @@ venv.bak/
 
 .idea/
 /.pytest_cache/
+/coverage_html_report/
