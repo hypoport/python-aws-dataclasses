@@ -16,7 +16,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name="LaWip",
-    version="0.0.1",
+    version="0.0.2",
     packages=find_packages(exclude=["*.test"]),
 
     # Project uses reStructuredText, so ensure that the docutils get
