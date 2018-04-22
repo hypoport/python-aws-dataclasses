@@ -13,4 +13,11 @@ CHANGES
 ==================
 
 * Sns Events
-* extends Tetss
+* extends Tests
+
+0.0.3 (2018-04-22)
+==================
+
+* Alexa Skill Event
+* CloudFormation Event
+* updates README
