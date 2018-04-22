@@ -22,7 +22,7 @@ CHANGES
 * CloudFormation Event
 * updates README
 
-0.0.3 (2018-04-22)
+0.0.4 (2018-04-22)
 ==================
 
 * some bugfixes
