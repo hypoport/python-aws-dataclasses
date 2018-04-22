@@ -38,7 +38,7 @@ class AlexaSkillRequest:
         self._timestamp = timestamp
         self._request_id = requestId
         self._type = type
-        self._intent = AlexaIntent(**intent)
+        self._intent = AlexaIntent(**intent) if isinstance(intent, dict) else None
         self._reason = reason
 
     @classmethod
