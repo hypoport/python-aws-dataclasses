@@ -17,9 +17,9 @@ def parse_intents(slots: Dict[str, Dict[str, str]]) -> Dict[str, IntentSlot]:
 
 class AlexaIntent:
     def __init__(self, name: str,
-                 slots: Dict, **kwargs):
+                 **kwargs):
         self._name = name
-        self._slots = parse_intents(slots)
+        self._slots = parse_intents(kwargs.pop("slots")) if "slots" in kwargs else None
         if len(kwargs) > 0:
             LOG.warning(f"Got unexpected kwargs in {self.__class__} => {kwargs}")
 
