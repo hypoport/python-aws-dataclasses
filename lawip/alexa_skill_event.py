@@ -37,13 +37,16 @@ class AlexaIntent:
 class AlexaSkillRequest:
     def __init__(self, locale: str, timestamp: str,
                  type: str, requestId: str,
-                 intent: Dict = None, reason: str = None):
+                 intent: Dict = None, reason: str = None,
+                 **kwargs):
         self._locale = locale
         self._timestamp = timestamp
         self._request_id = requestId
         self._type = type
         self._intent = AlexaIntent(**intent) if isinstance(intent, dict) else None
         self._reason = reason
+        if len(kwargs) > 0:
+            LOG.warning(f"Unerwartete keyword-argumente gefunden in {self.__class__} => {kwargs}")
 
     @classmethod
     def from_json(cls, session: Dict):
@@ -124,7 +127,8 @@ class AlexaSkillEvent:
         self._version = version
         self._request = AlexaSkillRequest(**request)
         self._context = AlexaSkillContext(**context)
-        LOG.warning(f"Unerwartete keyword-argumente gefunden: {kwargs}")
+        if len(kwargs) > 0:
+            LOG.warning(f"Unerwartete keyword-argumente gefunden in {self.__class__} => {kwargs}")
 
     @classmethod
     def from_event(cls, event):

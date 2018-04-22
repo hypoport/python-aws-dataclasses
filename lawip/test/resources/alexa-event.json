@@ -13,6 +13,7 @@
   "version": "1.0",
   "request": {
     "locale": "en-US",
+    "shouldLinkResultBeReturned": true,
     "timestamp": "2016-10-27T21:06:28Z",
     "type": "IntentRequest",
     "requestId": "amzn1.echo-api.request.[unique-value-here]",
