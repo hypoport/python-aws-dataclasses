@@ -1,6 +1,10 @@
 from collections import namedtuple
 from typing import Dict
 
+from lawip.log import get_logger
+
+LOG = get_logger(__name__)
+
 IntentSlot = namedtuple("IntentSlot", ['name', 'value'])
 AlexaSkillUser = namedtuple("AlexaSkillUser", ["userId"])
 AlexaSkillApplication = namedtuple("AlexaSkillApplication", ["applicationId"])
@@ -115,11 +119,12 @@ class AlexaSkillContext:
 class AlexaSkillEvent:
     def __init__(self, session: Dict,
                  version: str, request: Dict,
-                 context: Dict):
+                 context: Dict, **kwargs):
         self._session = AlexaSkillSession(**session)
         self._version = version
         self._request = AlexaSkillRequest(**request)
         self._context = AlexaSkillContext(**context)
+        LOG.warning(f"Unerwartete keyword-argumente gefunden: {kwargs}")
 
     @classmethod
     def from_event(cls, event):
