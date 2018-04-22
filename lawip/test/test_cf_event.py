@@ -1,4 +1,4 @@
-from unittest2 import TestCase
+from unittest import TestCase
 
 from lawip.cf_event import CloudfrontEvent
 from lawip.http_proxy_event import ApiGwProxyEvent

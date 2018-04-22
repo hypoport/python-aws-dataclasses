@@ -1,7 +1,6 @@
-from unittest2 import TestCase
+from unittest import TestCase
 
 from lawip.alexa_skill_event import AlexaSkillEvent
-from lawip.sns_event import SnsEvent
 
 from lawip.test.util import get_event_dict
 

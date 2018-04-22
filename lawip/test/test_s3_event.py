@@ -1,4 +1,4 @@
-from unittest2 import TestCase
+from unittest import TestCase
 
 from lawip.s3_event import S3Event
 from lawip.test.util import get_event_dict
