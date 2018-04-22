@@ -17,9 +17,11 @@ def parse_intents(slots: Dict[str, Dict[str, str]]) -> Dict[str, IntentSlot]:
 
 class AlexaIntent:
     def __init__(self, name: str,
-                 slots: Dict):
+                 slots: Dict, **kwargs):
         self._name = name
         self._slots = parse_intents(slots)
+        if len(kwargs) > 0:
+            LOG.warning(f"Got unexpected kwargs in {self.__class__} => {kwargs}")
 
     @classmethod
     def from_json(cls, intent: Dict):
