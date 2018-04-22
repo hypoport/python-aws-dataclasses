@@ -2,35 +2,26 @@
 LaWip
 ===========
 
-LaWip provides data-classes for AWS lambda events::
+LaWip provides data-classes for AWS lambda events
 
-    #!/usr/bin/env python
+**Installation**
 
-    from towelstuff import location
-    from towelstuff import utils
+::
 
-    if utils.has_towel():
-        print "Your towel is located:", location.where_is_my_towel()
+    # current version
+    pip install git+https://github.com/bweigel/LaWip.git
 
+    # using a tagged/released version
+    pip install git+https://github.com/bweigel/LaWip.git@0.0.1
 
-A Section
-=========
+**Test using tox**
 
-Lists look like this:
+::
 
-* First
+    tox
 
-* Second. Can be multiple lines
-  but must be indented properly.
+**Test using setup.py**
 
-A Sub-Section
--------------
+::
 
-Numbered lists look like you'd expect:
-
-1. hi there
-
-2. must be going
-
-Urls are http://like.this and links can be
-written `like this <http://www.example.com/foo/bar>`_.
+    python setup.py test
