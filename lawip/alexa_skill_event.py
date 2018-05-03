@@ -84,12 +84,15 @@ class AlexaSkillSession:
                  sessionId: str,
                  user: Dict[str, str],
                  application: Dict[str, str],
-                 attributes: Dict = None):
+                 attributes: Dict = None,
+                 **kwargs):
         self._new = new
         self._session_id = sessionId
         self._attributes = attributes
         self._user = AlexaSkillUser(**user)
         self._application = AlexaSkillApplication(**application)
+        if len(kwargs) > 0:
+            LOG.warning(f"Unerwartete keyword-argumente gefunden in {self.__class__} => {kwargs}")
 
     @classmethod
     def from_json(cls, session):

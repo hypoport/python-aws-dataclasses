@@ -3,6 +3,7 @@
     "new": false,
     "sessionId": "amzn1.echo-api.session.[unique-value-here]",
     "attributes": {},
+    "certificationParam2": "test123",
     "user": {
       "userId": "amzn1.ask.account.[unique-value-here]"
     },
