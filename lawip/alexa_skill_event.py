@@ -120,7 +120,7 @@ class AlexaSkillSession:
 
 
 class AlexaSkillContext:
-    def __init__(self, AudioPlayer, System, **kwargs):
+    def __init__(self, **kwargs):
         pass
 
 
