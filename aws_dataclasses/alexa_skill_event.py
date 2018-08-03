@@ -1,7 +1,7 @@
 from collections import namedtuple
 from typing import Dict
 
-from lawip.log import get_logger
+from aws_dataclasses.log import get_logger
 
 LOG = get_logger(__name__)
 
@@ -17,9 +17,11 @@ def parse_intents(slots: Dict[str, Dict[str, str]]) -> Dict[str, IntentSlot]:
 
 class AlexaIntent:
     def __init__(self, name: str,
-                 slots: Dict):
+                 **kwargs):
         self._name = name
-        self._slots = parse_intents(slots)
+        self._slots = parse_intents(kwargs.pop("slots")) if "slots" in kwargs else None
+        if len(kwargs) > 0:
+            LOG.warning(f"Got unexpected kwargs in {self.__class__} => {kwargs}")
 
     @classmethod
     def from_json(cls, intent: Dict):
@@ -82,12 +84,15 @@ class AlexaSkillSession:
                  sessionId: str,
                  user: Dict[str, str],
                  application: Dict[str, str],
-                 attributes: Dict = None):
+                 attributes: Dict = None,
+                 **kwargs):
         self._new = new
         self._session_id = sessionId
         self._attributes = attributes
         self._user = AlexaSkillUser(**user)
         self._application = AlexaSkillApplication(**application)
+        if len(kwargs) > 0:
+            LOG.warning(f"Unerwartete keyword-argumente gefunden in {self.__class__} => {kwargs}")
 
     @classmethod
     def from_json(cls, session):
@@ -115,7 +120,7 @@ class AlexaSkillSession:
 
 
 class AlexaSkillContext:
-    def __init__(self, AudioPlayer, System, **kwargs):
+    def __init__(self, **kwargs):
         pass
 
 

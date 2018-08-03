@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-from lawip.alexa_skill_event import AlexaSkillEvent
+from aws_dataclasses.alexa_skill_event import AlexaSkillEvent
 
-from lawip.test.util import get_event_dict
+from aws_dataclasses.test.util import get_event_dict
 
 
 class TestSnsEvent(TestCase):

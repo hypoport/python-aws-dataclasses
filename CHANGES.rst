@@ -26,3 +26,8 @@ CHANGES
 ==================
 
 * some bugfixes
+
+0.1.0 (2018-08-03)
+==================
+
+* rename package to make it more relatable to the problem it tries to solve
