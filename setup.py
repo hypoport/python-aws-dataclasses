@@ -17,7 +17,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name="python-aws-dataclasses",
     version="0.1.2",
-    packages=find_packages(exclude=["*.test"]),
+    packages=find_packages(exclude=["tests"]),
 
     # Project uses reStructuredText, so ensure that the docutils get
     # installed or upgraded on the target machine
@@ -42,6 +42,6 @@ setup(
         "Source Code": "http://github.com/hypoport/python-aws-dataclasses",
     },
 
-    test_suite="aws_dataclasses.test"
+    test_suite="tests"
 
 )
