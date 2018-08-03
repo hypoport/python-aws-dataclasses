@@ -32,3 +32,8 @@ class TestSnsEvent(TestCase):
         res = SnsMessage(**sns)
         msg_attr = res.message_attributes
         self.assertIsNone(msg_attr)
+
+    def test_can_handle_extra_fields(self):
+        sns = self.event_dict["Records"][0]["Sns"]
+        sns["TestAttr"] = 1234
+        res = SnsMessage.from_json(sns)

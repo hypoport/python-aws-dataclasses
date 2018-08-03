@@ -4,6 +4,8 @@ from typing import Dict, List
 
 from dataclasses import dataclass, field, InitVar
 
+from util import handle_nonexisting_fields
+
 MessageAttribute = namedtuple("MessageAttribute", ['type', 'value'])
 
 
@@ -57,6 +59,7 @@ class SnsMessage:
     def from_json(cls, sns):
         if isinstance(sns, str):
             sns = json.loads(sns)
+        sns = handle_nonexisting_fields(sns, cls)
         return cls(**sns)
 
 
@@ -81,6 +84,7 @@ class SnsRecord:
     def from_json(cls, record):
         if isinstance(record, str):
             record = json.loads(record)
+        record = handle_nonexisting_fields(record, cls)
         return cls(**record)
 
 
@@ -98,4 +102,5 @@ class SnsEvent:
     def from_event(cls, event):
         if isinstance(event, str):
             event = json.loads(event)
+        event = handle_nonexisting_fields(event, cls)
         return cls(**event)
