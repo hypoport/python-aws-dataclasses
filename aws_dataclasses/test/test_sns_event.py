@@ -1,14 +1,14 @@
 from unittest import TestCase
 
-from aws_dataclasses.sns_event import SnsEvent
+from aws_dataclasses.sns_event import SnsEvent, SnsMessage
 
 from aws_dataclasses.test.util import get_event_dict
 
 
 class TestSnsEvent(TestCase):
     def setUp(self):
-        event_dict = get_event_dict("sns-event.json")
-        self.event = SnsEvent.from_event(event_dict).first_record
+        self.event_dict = get_event_dict("sns-event.json")
+        self.event = SnsEvent.from_event(self.event_dict).first_record
 
     def test_sns_record(self):
         evt = self.event
@@ -25,3 +25,10 @@ class TestSnsEvent(TestCase):
         msg_attr = self.event.sns.message_attributes
         self.assertEqual(msg_attr.get("Test").value, "TestString")
         self.assertEqual(msg_attr.get("Test").type, "String")
+
+    def test_can_handle_missing_fields(self):
+        sns = self.event_dict["Records"][0]["Sns"]
+        sns.pop("MessageAttributes")
+        res = SnsMessage(**sns)
+        msg_attr = res.message_attributes
+        self.assertIsNone(msg_attr)

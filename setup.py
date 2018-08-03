@@ -16,12 +16,13 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name="python-aws-dataclasses",
-    version="0.1.1",
+    version="0.1.2",
     packages=find_packages(exclude=["*.test"]),
 
     # Project uses reStructuredText, so ensure that the docutils get
     # installed or upgraded on the target machine
-    install_requires=['docutils>=0.3'],
+    install_requires=['docutils>=0.3',
+                      'dataclasses>=0.6'],
 
     package_data={
         '': ['*.txt', '*.rst', '*.md']
