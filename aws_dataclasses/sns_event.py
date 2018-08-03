@@ -11,8 +11,8 @@ def parse_message_attributes(attrs):
 
 class Sns:
     def __init__(self, signature_version: str, timestamp: str, signature: str, signing_cert_url: str,
-                 message_id: str, message: str, subject: str, message_attributes: Dict[str, MessageAttribute],
-                 type_: str, unsubscribe_url: str, topic_arn: str):
+                 message_id: str, message: str, subject: str, message_attributes: Dict[str, MessageAttribute] = None,
+                 type_: str = None, unsubscribe_url: str = None, topic_arn: str = None):
         self._signature_version = signature_version
         self._timestamp = timestamp
         self._signature = signature
