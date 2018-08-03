@@ -1,8 +1,8 @@
 ===========
-LaWip
+Python-AWS-Dataclasses [WIP]
 ===========
 
-LaWip provides data-classes for AWS lambda events
+Python-AWS-Dataclasses provides data-classes for AWS lambda events
 
 **Installation**
 
