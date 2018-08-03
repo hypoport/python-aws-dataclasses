@@ -1,9 +1,8 @@
 from unittest import TestCase
 
 from aws_dataclasses.cf_event import CloudfrontEvent
-from aws_dataclasses.http_proxy_event import ApiGwProxyEvent
 
-from aws_dataclasses.test.util import get_event_dict
+from .util import get_event_dict
 
 
 class TestProxyEvent(TestCase):

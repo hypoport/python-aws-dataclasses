@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from aws_dataclasses.s3_event import S3Event
-from aws_dataclasses.test.util import get_event_dict
+from .util import get_event_dict
 
 
 class TestS3Event(TestCase):

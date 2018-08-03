@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from aws_dataclasses.sns_event import SnsEvent, SnsMessage
 
-from aws_dataclasses.test.util import get_event_dict
+from .util import get_event_dict
 
 
 class TestSnsEvent(TestCase):
