@@ -4,7 +4,7 @@ from typing import Dict, List
 
 from dataclasses import dataclass, field, InitVar
 
-from util import handle_nonexisting_fields
+from aws_dataclasses.util import handle_nonexisting_fields
 
 MessageAttribute = namedtuple("MessageAttribute", ['type', 'value'])
 
