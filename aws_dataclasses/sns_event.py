@@ -11,8 +11,8 @@ def parse_message_attributes(attrs):
 
 class Sns:
     def __init__(self, signature_version: str, timestamp: str, signature: str, signing_cert_url: str,
-                 message_id: str, message: str, subject: str, message_attributes: Dict[str, MessageAttribute] = None,
-                 type_: str = None, unsubscribe_url: str = None, topic_arn: str = None):
+                 message_id: str, message: str, subject: str, message_attributes: Dict[str, MessageAttribute],
+                 type_: str, unsubscribe_url: str, topic_arn: str):
         self._signature_version = signature_version
         self._timestamp = timestamp
         self._signature = signature
@@ -26,19 +26,22 @@ class Sns:
         self._topic_arn = topic_arn
 
     @classmethod
-    def from_json(cls, s3):
-        message_attributes = parse_message_attributes(s3["MessageAttributes"])
-        return cls(s3["SignatureVersion"],
-                   s3["Timestamp"],
-                   s3["Signature"],
-                   s3["SigningCertUrl"],
-                   s3["MessageId"],
-                   s3["Message"],
-                   s3["Subject"],
+    def from_json(cls, sns):
+        if "MessageAttributes" in sns:
+            message_attributes = parse_message_attributes(sns["MessageAttributes"])
+        else:
+            message_attributes = None
+        return cls(sns["SignatureVersion"],
+                   sns["Timestamp"],
+                   sns["Signature"],
+                   sns["SigningCertUrl"],
+                   sns["MessageId"],
+                   sns["Message"],
+                   sns["Subject"],
                    message_attributes,
-                   s3["Type"],
-                   s3["UnsubscribeUrl"],
-                   s3["TopicArn"])
+                   sns["Type"],
+                   sns["UnsubscribeUrl"],
+                   sns["TopicArn"])
 
     @property
     def signature_version(self):
