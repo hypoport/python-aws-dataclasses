@@ -1,0 +1,27 @@
+{
+  "get_remaining_time_in_millis": (),
+  "function_name": "",
+  "function_version": "",
+  "invoked_function_arn": "",
+  "memory_limit_in_mb": "",
+  "aws_request_id": "",
+  "log_group_name": "",
+  "log_stream_name": "",
+  "identity": {
+    "cognito_identity_id": "",
+    "cognito_identity_pool_id": ""
+  },
+  "client_context": {
+    "client": {
+      "installation_id": "",
+      "app_title": "",
+      "app_version_name": "",
+      "app_version_code": "",
+      "app_package_name": "custom"
+    },
+    "custom":,
+    "env": {
+      "KEY": "VALUE"
+    }
+  }
+}

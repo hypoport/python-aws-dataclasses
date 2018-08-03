@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-from lawip.http_proxy_event import ApiGwProxyEvent
+from aws_dataclasses.http_proxy_event import ApiGwProxyEvent
 
-from lawip.test.util import get_event_dict
+from aws_dataclasses.test.util import get_event_dict
 
 
 class TestProxyEvent(TestCase):

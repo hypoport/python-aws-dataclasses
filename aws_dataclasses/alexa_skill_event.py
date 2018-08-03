@@ -1,7 +1,7 @@
 from collections import namedtuple
 from typing import Dict
 
-from lawip.log import get_logger
+from aws_dataclasses.log import get_logger
 
 LOG = get_logger(__name__)
 
