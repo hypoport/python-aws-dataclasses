@@ -12,7 +12,7 @@ with open(path.join(here, 'HISTORY.md'), encoding='utf-8') as f:
 
 setup(
     name="python-aws-dataclasses",
-    version="version='0.1.3'",
+    version="0.1.3",
     packages=find_packages(exclude=["tests"]),
 
     install_requires=['docutils>=0.3',
