@@ -1,10 +1,3 @@
-"""A setuptools based setup module.
-See:
-https://packaging.python.org/en/latest/distributing.html
-https://github.com/pypa/sampleproject
-"""
-
-# Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 from os import path
 
@@ -14,13 +7,14 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
+with open(path.join(here, 'HISTORY.md'), encoding='utf-8') as f:
+    history = f.read()
+
 setup(
     name="python-aws-dataclasses",
     version="0.1.2",
     packages=find_packages(exclude=["tests"]),
 
-    # Project uses reStructuredText, so ensure that the docutils get
-    # installed or upgraded on the target machine
     install_requires=['docutils>=0.3',
                       'dataclasses>=0.6'],
 
@@ -28,11 +22,10 @@ setup(
         '': ['*.txt', '*.rst', '*.md']
     },
 
-    # metadata for upload to PyPI
     author="Benjamin Weigel",
     author_email="benjamin.weigel@europace.de",
     description="Data classes for AWS stuff (lambda events etc.)",
-    long_description=long_description,
+    long_description=long_description + "\n\n" + history,
     license="Apache 2.0",
     keywords="aws lambda events",
     url="http://github.com/hypoport/python-aws-dataclasses",  # project home page, if any
