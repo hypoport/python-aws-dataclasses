@@ -10,6 +10,11 @@ dataclasses = "*"
 [dev-packages]
 pytest = "*"
 pytest-runner = "*"
+detox = "*"
+bumpversion = "*"
+pytest-cov = "*"
+pytest-xdist = "*"
+codecov = "*"
 
 [requires]
 python_version = "3.6"
