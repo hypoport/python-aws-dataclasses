@@ -1,18 +1,18 @@
 ===========
-LaWip
+Python-AWS-Dataclasses [WIP]
 ===========
 
-LaWip provides data-classes for AWS lambda events
+Python-AWS-Dataclasses provides data-classes for AWS lambda events
 
 **Installation**
 
 ::
 
     # current version
-    pip install git+https://github.com/bweigel/LaWip.git
+    pip install git+https://github.com/hypoport/python-aws-dataclasses.git
 
     # using a tagged/released version
-    pip install git+https://github.com/bweigel/LaWip.git@0.0.1
+    pip install git+https://github.com/hypoport/python-aws-dataclasses.git@0.0.1
 
 **Test using tox**
 

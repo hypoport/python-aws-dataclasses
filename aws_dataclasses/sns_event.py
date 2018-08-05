@@ -63,6 +63,7 @@ class SnsMessage:
         return cls(**sns)
 
 
+
 @dataclass
 class SnsRecord:
     event_source: str = field(init=False)
