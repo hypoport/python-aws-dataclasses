@@ -6,14 +6,14 @@ install:
 # command to run tests
 script:
   - |
-    if [[ "$TRAVIS_PYTHON_VERSION" != "2.6" ]] ; then make test-readme; fi
+    if [[ "$TRAVIS_PYTHON_VERSION" != "2.6" ]] ; then make test-metadata; fi
   - make ci
 cache: pip
 jobs:
   include:
     - stage: test
       script:
-        - make test-readme
+        - make test-metadata
         - make ci
       python: '3.6'
     - stage: coverage
