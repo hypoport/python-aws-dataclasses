@@ -1,174 +1,101 @@
 from typing import Dict
 
+from dataclasses import dataclass, field, InitVar
+
 from util import GenericDataClass
 
 
+@dataclass
 class Identity(GenericDataClass):
-    def __init__(self,
-                 api_key: str,
-                 user_arn: str,
-                 cognito_auth_type: str,
-                 caller: str,
-                 user_agent: str,
-                 user: str,
-                 cognito_identity_pool_id: str,
-                 cognito_auth_provider: str,
-                 source_ip: str,
-                 account_id: str,
-                 cognito_identity_id: str):
-        self._api_key = api_key
-        self._user_arn = user_arn
-        self._cognito_auth_type = cognito_auth_type
-        self._caller = caller
-        self._user_agent = user_agent
-        self._user = user
-        self._cognito_identity_pool_id = cognito_identity_pool_id
-        self._cognito_auth_provider = cognito_auth_provider
-        self._source_ip = source_ip
-        self._account_id = account_id
-        self._cognito_identity_id = cognito_identity_id
+    caller: str
+    user: str
+    api_key: str = field(init=False)
+    user_arn: str = field(init=False)
+    cognito_auth_type: str = field(init=False)
+    user_agent: str = field(init=False)
+    cognito_identity_pool_id: str = field(init=False)
+    cognito_auth_provider: str = field(init=False)
+    source_ip: str = field(init=False)
+    account_id: str = field(init=False)
+    cognito_identity_id: str = field(init=False)
+    apiKey: InitVar[str] = field(repr=False, default=None)
+    userArn: InitVar[str] = field(repr=False, default=None)
+    cognitoAuthenticationType: InitVar[str] = field(repr=False, default=None)
+    userAgent: InitVar[str] = field(repr=False, default=None)
+    cognitoIdentityPoolId: InitVar[str] = field(repr=False, default=None)
+    cognitoAuthenticationProvider: InitVar[str] = field(repr=False, default=None)
+    sourceIp: InitVar[str] = field(repr=False, default=None)
+    accountId: InitVar[str] = field(repr=False, default=None)
+    cognitoIdentityId: InitVar[str] = field(repr=False, default=None)
 
-    @classmethod
-    def from_json(cls, identity):
-        return cls(identity["apiKey"],
-                   identity["userArn"],
-                   identity["cognitoAuthenticationType"],
-                   identity["caller"],
-                   identity["userAgent"],
-                   identity["user"],
-                   identity["cognitoIdentityPoolId"],
-                   identity["cognitoAuthenticationProvider"],
-                   identity["sourceIp"],
-                   identity["accountId"],
-                   identity["cognitoIdentityId"])
+    def __post_init__(self, apiKey: str, userArn: str, cognitoAuthenticationType: str, userAgent: str,
+                      cognitoIdentityPoolId: str, cognitoAuthenticationProvider: str, sourceIp: str, accountId: str,
+                      cognitoIdentityId: str):
+        self.api_key = apiKey
+        self.user_arn = userArn
+        self.user_agent = userAgent
+        self.cognito_auth_type = cognitoAuthenticationType
+        self.cognito_auth_provider = cognitoAuthenticationProvider
+        self.cognito_identity_id = cognitoIdentityId
+        self.cognito_identity_pool_id = cognitoIdentityPoolId
+        self.source_ip = sourceIp
+        self.account_id = accountId
 
 
+@dataclass
 class RequestContext(GenericDataClass):
-    def __init__(self, resource_id: str,
-                 api_id: str,
-                 resource_path: str,
-                 http_method: str,
-                 request_id: str,
-                 account_id: str,
-                 identity: Identity,
-                 stage: str):
-        self._resource_id = resource_id
-        self._api_id = api_id
-        self._resource_path = resource_path
-        self._http_method = http_method
-        self._request_id = request_id
-        self._account_id = account_id
-        self._identity = identity
-        self._stage = stage
+    stage: str
+    identity: Identity
+    resource_id: str = field(init=False)
+    api_id: str = field(init=False)
+    resource_path: str = field(init=False)
+    http_method: str = field(init=False)
+    request_id: str = field(init=False)
+    account_id: str = field(init=False)
+    resourceId: InitVar[str] = field(repr=False, default=None)
+    apiId: InitVar[str] = field(repr=False, default=None)
+    resourcePath: InitVar[str] = field(repr=False, default=None)
+    httpMethod: InitVar[str] = field(repr=False, default=None)
+    requestId: InitVar[str] = field(repr=False, default=None)
+    accountId: InitVar[str] = field(repr=False, default=None)
 
-    @classmethod
-    def from_json(cls, context):
-        return cls(context["resourceId"],
-                   context["apiId"],
-                   context["resourcePath"],
-                   context["httpMethod"],
-                   context["requestId"],
-                   context["accountId"],
-                   context["identity"],
-                   context["stage"])
-
-    @property
-    def resource_id(self):
-        return self._resource_id
-
-    @property
-    def resource_path(self):
-        return self._resource_path
-
-    @property
-    def api_id(self):
-        return self._api_id
-
-    @property
-    def http_method(self):
-        return self._http_method
-
-    @property
-    def request_id(self):
-        return self._request_id
-
-    @property
-    def account_id(self):
-        return self._account_id
-
-    @property
-    def identity(self):
-        return self._identity
-
-    @property
-    def stage(self):
-        return self._stage
+    def __post_init__(self, resourceId: str, apiId: str, resourcePath: str, httpMethod: str, requestId: str,
+                      accountId: str):
+        self.request_id = requestId
+        self.resource_id = resourceId
+        self.resource_path = resourcePath
+        self.account_id = accountId
+        self.api_id = apiId
+        self.http_method = httpMethod
+        self.identity = Identity(**self.identity)
 
 
+@dataclass
 class ApiGwProxyEvent(GenericDataClass):
-    def __init__(self, body: str,
-                 resource: str,
-                 request_context: RequestContext,
-                 query_string_parameters: Dict[str, str],
-                 headers: Dict[str, str],
-                 path_parameters: Dict[str, str],
-                 http_method: str,
-                 stage_variables: Dict[str, str],
-                 path: str):
-        self._body = body
-        self._resource = resource
-        self._request_context = request_context
-        self._query_string_parameters = query_string_parameters
-        self._headers = headers
-        self._path_parameters = path_parameters
-        self._http_method = http_method
-        self._stage_variables = stage_variables
-        self._path = path
+    body: str
+    resource: str
+    path: str
+    headers: Dict[str, str]
+    http_method: str = field(init=False)
+    request_context: RequestContext = field(init=False)
+    query_string_parameters: Dict[str, str] = field(init=False)
+    path_parameters: Dict[str, str] = field(init=False)
+    stage_variables: Dict[str, str] = field(init=False)
+    requestContext: InitVar[Dict] = field(repr=False, default=None)
+    queryStringParameters: InitVar[str] = field(repr=False, default=None)
+    pathParameters: InitVar[str] = field(repr=False, default=None)
+    httpMethod: InitVar[str] = field(repr=False, default=None)
+    stageVariables: InitVar[str] = field(repr=False, default=None)
+
+    def __post_init__(self, requestContext: str, queryStringParameters: str, pathParameters: str, httpMethod: str,
+                      stageVariables: str):
+        self.request_context = RequestContext(**requestContext)
+        self.query_string_parameters = queryStringParameters
+        self.path_parameters = pathParameters
+        self.http_method = httpMethod
+        self.stage_variables = stageVariables
 
     @classmethod
     def from_event(cls, event):
-        return cls(event["body"],
-                   event["resource"],
-                   RequestContext.from_json(event["requestContext"]),
-                   event["queryStringParameters"],
-                   event["headers"],
-                   event["pathParameters"],
-                   event["httpMethod"],
-                   event["stageVariables"],
-                   event["path"])
-
-    @property
-    def body(self) -> str:
-        return self._body
-
-    @property
-    def resource(self) -> str:
-        return self._resource
-
-    @property
-    def request_context(self) -> RequestContext:
-        return self._request_context
-
-    @property
-    def query_string_parameters(self) -> dict:
-        return self._query_string_parameters
-
-    @property
-    def headers(self) -> dict:
-        return self._headers
-
-    @property
-    def path_parameters(self) -> dict:
-        return self._path_parameters
-
-    @property
-    def http_method(self) -> str:
-        return self._http_method
-
-    @property
-    def stage_variables(self) -> dict:
-        return self._stage_variables
-
-    @property
-    def path(self) -> str:
-        return self._path
+        print(event)
+        return cls.from_json(event)
