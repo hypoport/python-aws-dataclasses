@@ -1,6 +1,9 @@
 from typing import Dict
 
-class Identity:
+from util import GenericDataClass
+
+
+class Identity(GenericDataClass):
     def __init__(self,
                  api_key: str,
                  user_arn: str,
@@ -40,7 +43,7 @@ class Identity:
                    identity["cognitoIdentityId"])
 
 
-class RequestContext:
+class RequestContext(GenericDataClass):
     def __init__(self, resource_id: str,
                  api_id: str,
                  resource_path: str,
@@ -102,7 +105,7 @@ class RequestContext:
         return self._stage
 
 
-class ApiGwProxyEvent:
+class ApiGwProxyEvent(GenericDataClass):
     def __init__(self, body: str,
                  resource: str,
                  request_context: RequestContext,

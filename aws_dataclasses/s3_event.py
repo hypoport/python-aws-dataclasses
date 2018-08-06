@@ -2,8 +2,10 @@ from typing import Dict
 
 import arrow
 
+from util import GenericDataClass
 
-class S3Object:
+
+class S3Object(GenericDataClass):
     def __init__(self, etag: str, sequencer: str, key: str, size: float):
         self._etag = etag
         self._sequencer = sequencer
@@ -34,7 +36,7 @@ class S3Object:
         return self._size
 
 
-class S3Bucket:
+class S3Bucket(GenericDataClass):
     def __init__(self, arn: str, name: str, owner_identity: str):
         self._arn = arn
         self._name = name
@@ -59,7 +61,7 @@ class S3Bucket:
         return self._owner_identity
 
 
-class S3():
+class S3(GenericDataClass):
     def __init__(self, configuration_id: str, obj: S3Object, bucket: S3Bucket, s3_schemaversion: str):
         self._configuration_id = configuration_id
         self._object = obj
@@ -90,7 +92,7 @@ class S3():
         return self._s3_schemaversion
 
 
-class S3Record:
+class S3Record(GenericDataClass):
     def __init__(self, event_version: str,
                  event_time: str,
                  request_params: Dict[str, str],
@@ -159,7 +161,7 @@ class S3Record:
         return self._event_source
 
 
-class S3Event:
+class S3Event(GenericDataClass):
     def __init__(self, records: [S3Record]):
         self._records = records
 

@@ -1,10 +1,9 @@
-import json
 from collections import namedtuple
 from typing import Dict, List
 
 from dataclasses import dataclass, field, InitVar
 
-from aws_dataclasses.util import handle_nonexisting_fields
+from util import GenericDataClass
 
 MessageAttribute = namedtuple("MessageAttribute", ['type', 'value'])
 
@@ -15,7 +14,7 @@ def parse_message_attributes(attrs):
 
 
 @dataclass
-class SnsMessage:
+class SnsMessage(GenericDataClass):
     signature_version: str = field(init=False)
     timestamp: str = field(init=False)
     signature: str = field(init=False)
@@ -55,17 +54,9 @@ class SnsMessage:
         if MessageAttributes is not None:
             self.message_attributes = parse_message_attributes(MessageAttributes)
 
-    @classmethod
-    def from_json(cls, sns):
-        if isinstance(sns, str):
-            sns = json.loads(sns)
-        sns = handle_nonexisting_fields(sns, cls)
-        return cls(**sns)
-
-
 
 @dataclass
-class SnsRecord:
+class SnsRecord(GenericDataClass):
     event_source: str = field(init=False)
     sns: SnsMessage = field(init=False)
     event_version: str = field(init=False)
@@ -81,16 +72,9 @@ class SnsRecord:
         self.event_subscription_arn = EventSubscriptionArn
         self.sns = SnsMessage(**Sns)
 
-    @classmethod
-    def from_json(cls, record):
-        if isinstance(record, str):
-            record = json.loads(record)
-        record = handle_nonexisting_fields(record, cls)
-        return cls(**record)
-
 
 @dataclass
-class SnsEvent:
+class SnsEvent(GenericDataClass):
     records: List[SnsRecord] = field(init=False)
     first_record: SnsRecord = field(init=False)
     Records: InitVar[List] = field(repr=False, default=[])
@@ -101,7 +85,4 @@ class SnsEvent:
 
     @classmethod
     def from_event(cls, event):
-        if isinstance(event, str):
-            event = json.loads(event)
-        event = handle_nonexisting_fields(event, cls)
-        return cls(**event)
+        return cls.from_json(event)

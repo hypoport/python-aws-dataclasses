@@ -1,6 +1,8 @@
 from collections import namedtuple
 from typing import Dict
 
+from util import GenericDataClass
+
 HeaderDict = namedtuple("HeaderDict", ['key', 'value'])
 
 
@@ -28,7 +30,7 @@ class CfConfig:
         return self._request_id
 
 
-class CfRequest:
+class CfRequest(GenericDataClass):
     def __init__(self, client_ip: str,
                  querystring: str,
                  uri: str,
@@ -76,7 +78,7 @@ class CfRequest:
         return self._origin
 
 
-class CfResponse:
+class CfResponse(GenericDataClass):
     def __init__(self, status: str, status_description: str, headers: Dict[str, HeaderDict]):
         self._status = status
         self._status_description = status_description
@@ -102,7 +104,7 @@ class CfResponse:
         return self._headers
 
 
-class CfRecord:
+class CfRecord(GenericDataClass):
     def __init__(self, config: CfConfig,
                  request: CfRequest,
                  response: CfResponse):
@@ -129,7 +131,7 @@ class CfRecord:
         return self._response
 
 
-class CloudfrontEvent:
+class CloudfrontEvent(GenericDataClass):
     def __init__(self, records: [CfRecord]):
         self._records = records
 

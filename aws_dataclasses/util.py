@@ -1,5 +1,8 @@
+import json
 import warnings
-from typing import Dict
+from typing import Dict, Union
+
+from dataclasses import dataclass
 
 
 def handle_nonexisting_fields(item: Dict, cls):
@@ -11,3 +14,13 @@ def handle_nonexisting_fields(item: Dict, cls):
         else:
             out[k] = v
     return out
+
+
+@dataclass
+class GenericDataClass:
+    @classmethod
+    def from_json(cls, input: Union[str, Dict]):
+        if isinstance(input, str):
+            input = json.loads(input)
+        input = handle_nonexisting_fields(input, cls)
+        return cls(**input)
