@@ -8,7 +8,7 @@ from aws_dataclasses.base import GenericDataClass, EventClass
 MessageAttribute = namedtuple("MessageAttribute", ['type', 'value'])
 
 
-def parse_message_attributes(attrs):
+def _parse_message_attributes(attrs):
     return {att_name: MessageAttribute(att.get("Type", None),
                                        att.get("Value", None)) for att_name, att in attrs.items()}
 
@@ -51,8 +51,8 @@ class SnsMessage(GenericDataClass):
         self.message_id = MessageId
         self.subject = Subject
         self.signing_cert_url = SigningCertUrl
-        if MessageAttributes is not None:
-            self.message_attributes = parse_message_attributes(MessageAttributes)
+        self.message_attributes = _parse_message_attributes(
+            MessageAttributes) if MessageAttributes is not None else MessageAttributes
 
 
 @dataclass
@@ -70,7 +70,7 @@ class SnsRecord(GenericDataClass):
         self.event_source = EventSource
         self.event_version = EventVersion
         self.event_subscription_arn = EventSubscriptionArn
-        self.sns = SnsMessage(**Sns)
+        self.sns = SnsMessage.from_json(Sns)
 
 
 @dataclass
