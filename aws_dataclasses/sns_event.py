@@ -3,7 +3,7 @@ from typing import Dict, List
 
 from dataclasses import dataclass, field, InitVar
 
-from util import GenericDataClass
+from aws_dataclasses.base import GenericDataClass, EventClass
 
 MessageAttribute = namedtuple("MessageAttribute", ['type', 'value'])
 
@@ -74,15 +74,11 @@ class SnsRecord(GenericDataClass):
 
 
 @dataclass
-class SnsEvent(GenericDataClass):
+class SnsEvent(EventClass):
     records: List[SnsRecord] = field(init=False)
     first_record: SnsRecord = field(init=False)
     Records: InitVar[List] = field(repr=False, default=[])
 
     def __post_init__(self, Records: List):
-        self.records = [SnsRecord(**record) for record in Records]
+        self.records = [SnsRecord.from_json(record) for record in Records]
         self.first_record = self.records[0]
-
-    @classmethod
-    def from_event(cls, event):
-        return cls.from_json(event)

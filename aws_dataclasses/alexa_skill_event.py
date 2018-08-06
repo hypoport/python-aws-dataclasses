@@ -5,8 +5,8 @@ from typing import Dict
 import arrow
 from dataclasses import dataclass, InitVar, field
 
-from aws_dataclasses.log import get_logger
-from util import GenericDataClass, EventClass
+from aws_dataclasses.util import get_logger
+from aws_dataclasses.base import GenericDataClass, EventClass
 
 LOG = get_logger(__name__)
 
@@ -79,7 +79,3 @@ class AlexaSkillEvent(EventClass):
         self.session = AlexaSkillSession.from_json(self.session)
         self.request = AlexaSkillRequest.from_json(self.request)
         self.context = AlexaSkillContext.from_json(self.context)
-
-    @classmethod
-    def from_event(cls, event):
-        return cls.from_json(event)

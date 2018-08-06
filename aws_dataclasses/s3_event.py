@@ -4,7 +4,7 @@ from typing import Dict, List
 import arrow
 from dataclasses import dataclass, InitVar, field
 
-from util import GenericDataClass
+from aws_dataclasses.base import GenericDataClass, EventClass
 
 
 @dataclass
@@ -42,8 +42,8 @@ class S3(GenericDataClass):
     def __post_init__(self, configurationId: str, s3SchemaVersion: str):
         self.configuration_id = configurationId
         self.s3_schemaversion = s3SchemaVersion
-        self.object = S3Object(**self.object)
-        self.bucket = S3Bucket(**self.bucket)
+        self.object = S3Object.from_json(self.object)
+        self.bucket = S3Bucket.from_json(self.bucket)
 
 
 @dataclass
@@ -77,19 +77,15 @@ class S3Record(GenericDataClass):
         self.aws_region = awsRegion
         self.request_params = requestParameters
         self.user_identity = userIdentity
-        self.s3 = S3(**self.s3)
+        self.s3 = S3.from_json(self.s3)
 
 
 @dataclass
-class S3Event(GenericDataClass):
+class S3Event(EventClass):
     records: List[S3Record] = field(init=False)
     first_record: S3Record = field(init=False)
     Records: InitVar[List[Dict]] = field(repr=False, default=[])
 
     def __post_init__(self, Records: List[Dict]):
-        self.records = [S3Record(**item) for item in Records]
+        self.records = [S3Record.from_json(item) for item in Records]
         self.first_record = self.records[0]
-
-    @classmethod
-    def from_event(cls, event):
-        return cls.from_json(event)

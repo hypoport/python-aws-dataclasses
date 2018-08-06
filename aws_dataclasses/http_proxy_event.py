@@ -2,7 +2,7 @@ from typing import Dict
 
 from dataclasses import dataclass, field, InitVar
 
-from util import GenericDataClass
+from aws_dataclasses.base import GenericDataClass, EventClass
 
 
 @dataclass
@@ -67,11 +67,11 @@ class RequestContext(GenericDataClass):
         self.account_id = accountId
         self.api_id = apiId
         self.http_method = httpMethod
-        self.identity = Identity(**self.identity)
+        self.identity = Identity.from_json(self.identity)
 
 
 @dataclass
-class ApiGwProxyEvent(GenericDataClass):
+class ApiGwProxyEvent(EventClass):
     body: str
     resource: str
     path: str
@@ -89,13 +89,9 @@ class ApiGwProxyEvent(GenericDataClass):
 
     def __post_init__(self, requestContext: str, queryStringParameters: str, pathParameters: str, httpMethod: str,
                       stageVariables: str):
-        self.request_context = RequestContext(**requestContext)
+        self.request_context = RequestContext.from_json(requestContext)
         self.query_string_parameters = queryStringParameters
         self.path_parameters = pathParameters
         self.http_method = httpMethod
         self.stage_variables = stageVariables
 
-    @classmethod
-    def from_event(cls, event):
-        print(event)
-        return cls.from_json(event)

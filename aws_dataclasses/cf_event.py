@@ -3,7 +3,7 @@ from typing import Dict, List, Optional
 
 from dataclasses import InitVar, field, dataclass
 
-from util import GenericDataClass
+from aws_dataclasses.base import GenericDataClass, EventClass
 
 KVPair = namedtuple("KVPair", ['key', 'value'])
 
@@ -61,21 +61,17 @@ class CloudFrontRecord(GenericDataClass):
     response: Optional[CloudFrontResponse] = field(default=None)
 
     def __post_init__(self):
-        self.config = CloudFrontConfig(**self.config)
-        self.request = CloudFrontfRequest(**self.request) if self.request is not None else self.request
-        self.response = CloudFrontResponse(**self.response) if self.response is not None else self.response
+        self.config = CloudFrontConfig.from_json(self.config)
+        self.request = CloudFrontfRequest.from_json(self.request) if self.request is not None else self.request
+        self.response = CloudFrontResponse.from_json(self.response) if self.response is not None else self.response
 
 
 @dataclass
-class CloudFrontEvent(GenericDataClass):
+class CloudFrontEvent(EventClass):
     records: List[CloudFrontRecord] = field(init=False)
     first_record: CloudFrontRecord = field(init=False)
     Records: InitVar[List[Dict]] = field(repr=False, default=[])
 
     def __post_init__(self, Records: List[Dict]):
-        self.records = [CloudFrontRecord(**record["cf"]) for record in Records]
+        self.records = [CloudFrontRecord.from_json(record["cf"]) for record in Records]
         self.first_record = self.records[0]
-
-    @classmethod
-    def from_event(cls, event):
-        return cls.from_json(event)

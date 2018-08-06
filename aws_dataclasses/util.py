@@ -3,24 +3,23 @@ import warnings
 from typing import Dict, Union
 
 from dataclasses import dataclass
+import logging
+
+import sys
 
 
-def handle_nonexisting_fields(item: Dict, cls):
-    out = {}
-    for k, v in item.items():
-        if k not in cls.__dataclass_fields__:
-            warnings.warn(f"Found field \"{k}\" in input, which is not part of dataclass \"{cls.__name__}\"",
-                          RuntimeWarning)
-        else:
-            out[k] = v
-    return out
+def get_logger(name):
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.DEBUG)
+    logger.propagate = False
+    if not logger.handlers:
+        ch = logging.StreamHandler(sys.stdout)
+        ch.setLevel(logging.DEBUG)
+        formatter = logging.Formatter('[%(levelname)s] %(asctime)s - %(name)s - %(message)s')
+        ch.setFormatter(formatter)
+        logger.addHandler(ch)
+    return logger
 
 
-@dataclass
-class GenericDataClass:
-    @classmethod
-    def from_json(cls, input: Union[str, Dict]):
-        if isinstance(input, str):
-            input = json.loads(input)
-        input = handle_nonexisting_fields(input, cls)
-        return cls(**input)
+
+
