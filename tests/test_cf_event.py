@@ -1,6 +1,6 @@
 import pytest
 
-from aws_dataclasses.cf_event import CloudfrontEvent
+from aws_dataclasses.cf_event import CloudFrontEvent
 
 from .util import get_event_dict
 
@@ -17,12 +17,12 @@ def cf_response_event_raw():
 
 @pytest.fixture(scope="module")
 def cf_request_event(cf_request_event_raw):
-    return CloudfrontEvent.from_event(cf_request_event_raw)
+    return CloudFrontEvent.from_event(cf_request_event_raw)
 
 
 @pytest.fixture(scope="module")
 def cf_response_event(cf_response_event_raw):
-    return CloudfrontEvent.from_event(cf_response_event_raw)
+    return CloudFrontEvent.from_event(cf_response_event_raw)
 
 
 def test_request(cf_request_event):

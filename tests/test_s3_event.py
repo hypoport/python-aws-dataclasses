@@ -28,7 +28,7 @@ class TestS3Event(TestCase):
 
     def test_record(self):
         evt = self.event
-        self.assertEqual(evt.first_record.event_time.format('YYYY-MM-DDTHH:mm:ssZ'), "1970-01-01T00:00:00+0000")
+        self.assertEqual(evt.first_record.event_time.strftime('%Y-%m-%dT%H:%M:%S%z'), "1970-01-01T00:00:00+0000")
         self.assertEqual(evt.first_record.event_version, "2.0")
         self.assertEqual(evt.first_record.aws_region, "us-east-1")
         self.assertEqual(evt.first_record.event_name, "ObjectCreated:Put")
