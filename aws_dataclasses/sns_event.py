@@ -1,135 +1,84 @@
 from collections import namedtuple
-from typing import Dict
+from typing import Dict, List
+
+from dataclasses import dataclass, field, InitVar
+
+from aws_dataclasses.base import GenericDataClass, EventClass
 
 MessageAttribute = namedtuple("MessageAttribute", ['type', 'value'])
 
 
-def parse_message_attributes(attrs):
+def _parse_message_attributes(attrs):
     return {att_name: MessageAttribute(att.get("Type", None),
                                        att.get("Value", None)) for att_name, att in attrs.items()}
 
 
-class Sns:
-    def __init__(self, signature_version: str, timestamp: str, signature: str, signing_cert_url: str,
-                 message_id: str, message: str, subject: str, message_attributes: Dict[str, MessageAttribute],
-                 type_: str, unsubscribe_url: str, topic_arn: str):
-        self._signature_version = signature_version
-        self._timestamp = timestamp
-        self._signature = signature
-        self._signing_cert_url = signing_cert_url
-        self._message_id = message_id
-        self._message = message
-        self._subject = subject
-        self._message_attributes = message_attributes
-        self._type = type_
-        self._unsubscribe_url = unsubscribe_url
-        self._topic_arn = topic_arn
+@dataclass
+class SnsMessage(GenericDataClass):
+    signature_version: str = field(init=False)
+    timestamp: str = field(init=False)
+    signature: str = field(init=False)
+    subject: str = field(init=False)
+    message_id: str = field(init=False)
+    message: str = field(init=False)
+    type: str = field(init=False)
+    topic_arn: str = field(init=False)
+    signing_cert_url: str = field(init=False)
+    unsubscribe_url: str = field(init=False)
+    message_attributes: Dict = field(init=False, default=None)
+    SignatureVersion: InitVar[str] = field(repr=False, default=None)
+    Timestamp: InitVar[str] = field(repr=False, default=None)
+    Signature: InitVar[str] = field(repr=False, default=None)
+    MessageId: InitVar[str] = field(repr=False, default=None)
+    Message: InitVar[str] = field(repr=False, default=None)
+    Subject: InitVar[str] = field(repr=False, default=None)
+    Type: InitVar[str] = field(repr=False, default=None)
+    TopicArn: InitVar[str] = field(repr=False, default=None)
+    UnsubscribeUrl: InitVar[str] = field(repr=False, default=None)
+    SigningCertUrl: InitVar[str] = field(repr=False, default=None)
+    MessageAttributes: InitVar[Dict] = field(repr=False, default=None)
 
-    @classmethod
-    def from_json(cls, sns):
-        if "MessageAttributes" in sns:
-            message_attributes = parse_message_attributes(sns["MessageAttributes"])
-        else:
-            message_attributes = None
-        return cls(sns["SignatureVersion"],
-                   sns["Timestamp"],
-                   sns["Signature"],
-                   sns["SigningCertUrl"],
-                   sns["MessageId"],
-                   sns["Message"],
-                   sns["Subject"],
-                   message_attributes,
-                   sns["Type"],
-                   sns["UnsubscribeUrl"],
-                   sns["TopicArn"])
-
-    @property
-    def signature_version(self):
-        return self._signature_version
-
-    @property
-    def timestamp(self):
-        return self._timestamp
-
-    @property
-    def signature(self):
-        return self._signature
-
-    @property
-    def signing_cert_url(self):
-        return self._signing_cert_url
-
-    @property
-    def message_id(self):
-        return self._message_id
-
-    @property
-    def message(self):
-        return self._message
-
-    @property
-    def subject(self):
-        return self._subject
-
-    @property
-    def message_attributes(self):
-        return self._message_attributes
-
-    @property
-    def type(self):
-        return self._type
-
-    @property
-    def unsubscribe_url(self):
-        return self._unsubscribe_url
-
-    @property
-    def topic_arn(self):
-        return self._topic_arn
+    def __post_init__(self, SignatureVersion: str, Timestamp: str, Signature: str, MessageId: str, Message: str,
+                      Subject: str, Type: str, TopicArn: str, UnsubscribeUrl: str, SigningCertUrl: str,
+                      MessageAttributes: Dict):
+        self.signature_version = SignatureVersion
+        self.signature = Signature
+        self.topic_arn = TopicArn
+        self.type = Type
+        self.unsubscribe_url = UnsubscribeUrl
+        self.timestamp = Timestamp
+        self.message = Message
+        self.message_id = MessageId
+        self.subject = Subject
+        self.signing_cert_url = SigningCertUrl
+        self.message_attributes = _parse_message_attributes(
+            MessageAttributes) if MessageAttributes is not None else MessageAttributes
 
 
-class SnsRecord:
-    def __init__(self, event_version: str,
-                 event_subscription_arn: str,
-                 sns: Sns,
-                 event_source: str):
-        self._event_version = event_version
-        self._event_source = event_source
-        self._sns = sns
-        self._event_subscription_arn = event_subscription_arn
+@dataclass
+class SnsRecord(GenericDataClass):
+    event_source: str = field(init=False)
+    sns: SnsMessage = field(init=False)
+    event_version: str = field(init=False)
+    event_subscription_arn: str = field(init=False)
+    EventVersion: InitVar[str] = field(repr=False, default=None)
+    EventSubscriptionArn: InitVar[str] = field(repr=False, default=None)
+    Sns: InitVar[Dict] = field(repr=False, default={})
+    EventSource: InitVar[str] = field(repr=False, default=None)
 
-    @classmethod
-    def from_json(cls, record):
-        return cls(record["EventVersion"],
-                   record["EventSubscriptionArn"],
-                   Sns.from_json(record["Sns"]),
-                   record["EventSource"])
-
-    @property
-    def event_version(self):
-        return self._event_version
-
-    @property
-    def sns(self):
-        return self._sns
-
-    @property
-    def event_source(self):
-        return self._event_source
+    def __post_init__(self, EventVersion: str, EventSubscriptionArn: str, Sns: Dict, EventSource: str):
+        self.event_source = EventSource
+        self.event_version = EventVersion
+        self.event_subscription_arn = EventSubscriptionArn
+        self.sns = SnsMessage.from_json(Sns)
 
 
-class SnsEvent:
-    def __init__(self, records: [SnsRecord]):
-        self._records = records
+@dataclass
+class SnsEvent(EventClass):
+    records: List[SnsRecord] = field(init=False)
+    first_record: SnsRecord = field(init=False)
+    Records: InitVar[List] = field(repr=False, default=[])
 
-    @classmethod
-    def from_event(cls, event):
-        return cls([SnsRecord.from_json(record) for record in event["Records"]])
-
-    @property
-    def records(self) -> [SnsRecord]:
-        return self._records
-
-    @property
-    def first_record(self) -> SnsRecord:
-        return self._records[0]
+    def __post_init__(self, Records: List):
+        self.records = [SnsRecord.from_json(record) for record in Records]
+        self.first_record = self.records[0]

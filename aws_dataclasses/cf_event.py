@@ -1,146 +1,77 @@
 from collections import namedtuple
-from typing import Dict
+from typing import Dict, List, Optional
 
-HeaderDict = namedtuple("HeaderDict", ['key', 'value'])
+from dataclasses import InitVar, field, dataclass
 
+from aws_dataclasses.base import GenericDataClass, EventClass
 
-def parse_headers(headers):
-    return {hdr_name: HeaderDict(header[0].get("key", None),
-                                 header[0].get("value", None)) for hdr_name, header in headers.items()}
-
-
-class CfConfig:
-    def __init__(self, distribution_id: str, request_id: str):
-        self._distribution_id = distribution_id
-        self._request_id = request_id
-
-    @classmethod
-    def from_json(cls, config):
-        return cls(config["distributionId"],
-                   config["requestId"])
-
-    @property
-    def distribution_id(self) -> str:
-        return self._distribution_id
-
-    @property
-    def request_id(self) -> str:
-        return self._request_id
+KVPair = namedtuple("KVPair", ['key', 'value'])
 
 
-class CfRequest:
-    def __init__(self, client_ip: str,
-                 querystring: str,
-                 uri: str,
-                 method: str,
-                 headers: Dict[str, HeaderDict],
-                 origin):
-        self._client_ip = client_ip
-        self._querystring = querystring
-        self._uri = uri
-        self._http_method = method
-        self._headers = headers
-        self._origin = origin
-
-    @classmethod
-    def from_json(cls, request):
-        return cls(request["clientIp"],
-                   request["querystring"],
-                   request["uri"],
-                   request["method"],
-                   parse_headers(request["headers"]),
-                   request.get("origin", None))
-
-    @property
-    def client_ip(self) -> str:
-        return self._client_ip
-
-    @property
-    def querystring(self) -> str:
-        return self._querystring
-
-    @property
-    def uri(self) -> str:
-        return self._uri
-
-    @property
-    def http_method(self) -> str:
-        return self._http_method
-
-    @property
-    def headers(self) -> Dict[str, HeaderDict]:
-        return self._headers
-
-    @property
-    def origin(self):
-        return self._origin
+def _parse_headers(headers) -> Dict[str, List[KVPair]]:
+    out = {}
+    for hdr_name, header_list in headers.items():
+        out[hdr_name] = [KVPair(header.get("key"), header.get("value")) for header in header_list]
+    return out
 
 
-class CfResponse:
-    def __init__(self, status: str, status_description: str, headers: Dict[str, HeaderDict]):
-        self._status = status
-        self._status_description = status_description
-        self._headers = headers
+@dataclass
+class CloudFrontConfig(GenericDataClass):
+    distribution_id: str = field(init=False)
+    request_id: str = field(init=False)
+    distributionId: InitVar[str] = field(repr=False, default=None)
+    requestId: InitVar[str] = field(repr=False, default=None)
 
-    @classmethod
-    def from_json(cls, response):
-        if response is not None:
-            return cls(response["status"],
-                       response["statusDescription"],
-                       parse_headers(response["headers"]))
-
-    @property
-    def status(self) -> str:
-        return self._status
-
-    @property
-    def status_description(self) -> str:
-        return self._status_description
-
-    @property
-    def headers(self) -> Dict[str, HeaderDict]:
-        return self._headers
+    def __post_init__(self, distributionId: str, requestId: str):
+        self.request_id = requestId
+        self.distribution_id = distributionId
 
 
-class CfRecord:
-    def __init__(self, config: CfConfig,
-                 request: CfRequest,
-                 response: CfResponse):
-        self._config = config
-        self._request = request
-        self._response = response
+@dataclass
+class CloudFrontfRequest(GenericDataClass):
+    querystring: str
+    uri: str
+    method: str
+    headers: Dict[str, List[KVPair]]
+    origin: str = field(default=None)
+    client_ip: str = field(init=False)
+    clientIp: InitVar[str] = field(repr=False, default=None)
 
-    @classmethod
-    def from_json(cls, cf):
-        return cls(CfConfig.from_json(cf["config"]),
-                   CfRequest.from_json(cf["request"]),
-                   CfResponse.from_json(cf.get("response", None)))
-
-    @property
-    def config(self) -> CfConfig:
-        return self._config
-
-    @property
-    def request(self) -> CfRequest:
-        return self._request
-
-    @property
-    def response(self) -> CfResponse:
-        return self._response
+    def __post_init__(self, clientIp: str):
+        self.client_ip = clientIp
+        self.headers = _parse_headers(self.headers)
 
 
-class CloudfrontEvent:
-    def __init__(self, records: [CfRecord]):
-        self._records = records
+@dataclass
+class CloudFrontResponse(GenericDataClass):
+    status: str
+    status_description: str = field(init=False)
+    headers: Dict[str, List[KVPair]]
+    statusDescription: InitVar[str] = field(repr=False, default=None)
 
-    @classmethod
-    def from_event(cls, event):
-        return cls([CfRecord.from_json(record["cf"]) for record in event["Records"]])
+    def __post_init__(self, statusDescription: str):
+        self.status_description = statusDescription
+        self.headers = _parse_headers(self.headers)
 
-    @property
-    def records(self) -> [CfRecord]:
-        return self._records
 
-    @property
-    def first_record(self) -> CfRecord:
-        return self._records[0]
+@dataclass
+class CloudFrontRecord(GenericDataClass):
+    config: CloudFrontConfig
+    request: Optional[CloudFrontfRequest] = field(default=None)
+    response: Optional[CloudFrontResponse] = field(default=None)
+
+    def __post_init__(self):
+        self.config = CloudFrontConfig.from_json(self.config)
+        self.request = CloudFrontfRequest.from_json(self.request) if self.request is not None else self.request
+        self.response = CloudFrontResponse.from_json(self.response) if self.response is not None else self.response
+
+
+@dataclass
+class CloudFrontEvent(EventClass):
+    records: List[CloudFrontRecord] = field(init=False)
+    first_record: CloudFrontRecord = field(init=False)
+    Records: InitVar[List[Dict]] = field(repr=False, default=[])
+
+    def __post_init__(self, Records: List[Dict]):
+        self.records = [CloudFrontRecord.from_json(record["cf"]) for record in Records]
+        self.first_record = self.records[0]

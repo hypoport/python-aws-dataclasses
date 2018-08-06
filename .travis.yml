@@ -1,0 +1,23 @@
+sudo: false
+language: python
+# command to install dependencies
+install:
+    - make init
+# command to run tests
+script:
+  - |
+    if [[ "$TRAVIS_PYTHON_VERSION" != "2.6" ]] ; then make test-metadata; fi
+  - make ci
+cache: pip
+jobs:
+  include:
+    - stage: test
+      script:
+        - make test-metadata
+        - make ci
+      python: '3.6'
+    - stage: coverage
+      python: 3.6
+      script:
+        - make coverage
+        - codecov

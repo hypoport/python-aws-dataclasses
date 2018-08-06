@@ -1,7 +1,12 @@
 from collections import namedtuple
+from datetime import datetime
 from typing import Dict
 
-from aws_dataclasses.log import get_logger
+import arrow
+from dataclasses import dataclass, InitVar, field
+
+from aws_dataclasses.util import get_logger
+from aws_dataclasses.base import GenericDataClass, EventClass
 
 LOG = get_logger(__name__)
 
@@ -10,147 +15,67 @@ AlexaSkillUser = namedtuple("AlexaSkillUser", ["userId"])
 AlexaSkillApplication = namedtuple("AlexaSkillApplication", ["applicationId"])
 
 
-def parse_intents(slots: Dict[str, Dict[str, str]]) -> Dict[str, IntentSlot]:
-    return {slot_name: IntentSlot(slot.get("key"),
+def _parse_intents(slots: Dict[str, Dict[str, str]]) -> Dict[str, IntentSlot]:
+    return {slot_name: IntentSlot(slot.get("name"),
                                   slot.get("value")) for slot_name, slot in slots.items()}
 
 
-class AlexaIntent:
-    def __init__(self, name: str,
-                 **kwargs):
-        self._name = name
-        self._slots = parse_intents(kwargs.pop("slots")) if "slots" in kwargs else None
-        if len(kwargs) > 0:
-            LOG.warning(f"Got unexpected kwargs in {self.__class__} => {kwargs}")
+@dataclass
+class AlexaIntent(GenericDataClass):
+    name: str
+    slots: Dict[str, IntentSlot]
 
-    @classmethod
-    def from_json(cls, intent: Dict):
-        return cls(**intent)
-
-    @property
-    def name(self) -> str:
-        return self._name
-
-    @property
-    def slots(self) -> Dict[str, IntentSlot]:
-        return self._slots
+    def __post_init__(self):
+        self.slots = _parse_intents(self.slots) if self.slots is not None else self.slots
 
 
-class AlexaSkillRequest:
-    def __init__(self, locale: str, timestamp: str,
-                 type: str, requestId: str,
-                 intent: Dict = None, reason: str = None,
-                 **kwargs):
-        self._locale = locale
-        self._timestamp = timestamp
-        self._request_id = requestId
-        self._type = type
-        self._intent = AlexaIntent(**intent) if isinstance(intent, dict) else None
-        self._reason = reason
-        if len(kwargs) > 0:
-            LOG.warning(f"Unerwartete keyword-argumente gefunden in {self.__class__} => {kwargs}")
+@dataclass
+class AlexaSkillRequest(GenericDataClass):
+    locale: str
+    timestamp: datetime
+    request_id: str = field(init=False)
+    type: str
+    reason: str = field(default=None)
+    should_link_result_be_returned: bool = field(init=False)
+    intent: AlexaIntent = field(default=None)
+    requestId: InitVar[str] = field(repr=False, default=None)
+    shouldLinkResultBeReturned: InitVar[bool] = field(repr=False, default=None)
 
-    @classmethod
-    def from_json(cls, session: Dict):
-        return cls(**session)
-
-    @property
-    def locale(self) -> str:
-        return self._locale
-
-    @property
-    def timestamp(self) -> str:
-        return self._timestamp
-
-    @property
-    def request_id(self) -> str:
-        return self._request_id
-
-    @property
-    def type(self) -> str:
-        return self._type
-
-    @property
-    def reason(self) -> str:
-        return self._reason
-
-    @property
-    def intent(self) -> AlexaIntent:
-        return self._intent
+    def __post_init__(self, requestId: str, shouldLinkResultBeReturned: bool):
+        self.timestamp = arrow.get(self.timestamp).datetime
+        self.request_id = requestId
+        self.should_link_result_be_returned = shouldLinkResultBeReturned
+        self.intent = AlexaIntent.from_json(self.intent) if self.intent is not None else self.intent
 
 
-class AlexaSkillSession:
-    def __init__(self, new: bool,
-                 sessionId: str,
-                 user: Dict[str, str],
-                 application: Dict[str, str],
-                 attributes: Dict = None,
-                 **kwargs):
-        self._new = new
-        self._session_id = sessionId
-        self._attributes = attributes
-        self._user = AlexaSkillUser(**user)
-        self._application = AlexaSkillApplication(**application)
-        if len(kwargs) > 0:
-            LOG.warning(f"Unerwartete keyword-argumente gefunden in {self.__class__} => {kwargs}")
+@dataclass
+class AlexaSkillSession(GenericDataClass):
+    new: bool
+    session_id: str = field(init=False)
+    user: AlexaSkillUser
+    application: AlexaSkillApplication
+    attributes: Dict = field(default=None)
+    sessionId: InitVar[str] = field(repr=False, default=None)
 
-    @classmethod
-    def from_json(cls, session):
-        return cls(**session)
-
-    @property
-    def new(self) -> bool:
-        return self._new
-
-    @property
-    def session_id(self) -> str:
-        return self._session_id
-
-    @property
-    def attributes(self) -> Dict:
-        return self._attributes
-
-    @property
-    def user(self) -> AlexaSkillUser:
-        return self._user
-
-    @property
-    def application(self) -> AlexaSkillApplication:
-        return self._application
+    def __post_init__(self, sessionId: str):
+        self.session_id = sessionId
+        self.user = AlexaSkillUser(**self.user)
+        self.application = AlexaSkillApplication(**self.application)
 
 
-class AlexaSkillContext:
-    def __init__(self, **kwargs):
-        pass
+@dataclass
+class AlexaSkillContext(GenericDataClass):
+    pass
 
 
-class AlexaSkillEvent:
-    def __init__(self, session: Dict,
-                 version: str, request: Dict,
-                 context: Dict, **kwargs):
-        self._session = AlexaSkillSession(**session)
-        self._version = version
-        self._request = AlexaSkillRequest(**request)
-        self._context = AlexaSkillContext(**context)
-        if len(kwargs) > 0:
-            LOG.warning(f"Unerwartete keyword-argumente gefunden in {self.__class__} => {kwargs}")
+@dataclass
+class AlexaSkillEvent(EventClass):
+    session: AlexaSkillSession
+    version: str
+    request: AlexaSkillRequest
+    context: AlexaSkillContext
 
-    @classmethod
-    def from_event(cls, event):
-        return cls(**event)
-
-    @property
-    def session(self) -> AlexaSkillSession:
-        return self._session
-
-    @property
-    def event_version(self) -> str:
-        return self._version
-
-    @property
-    def request(self) -> AlexaSkillRequest:
-        return self._request
-
-    @property
-    def context(self) -> AlexaSkillContext:
-        return self._context
+    def __post_init__(self):
+        self.session = AlexaSkillSession.from_json(self.session)
+        self.request = AlexaSkillRequest.from_json(self.request)
+        self.context = AlexaSkillContext.from_json(self.context)

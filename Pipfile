@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+arrow = "*"
+dataclasses = "*"
+
+[dev-packages]
+pytest = "*"
+pytest-runner = "*"
+detox = "*"
+bumpversion = "*"
+pytest-cov = "*"
+pytest-xdist = "*"
+codecov = "*"
+
+[requires]
+python_version = "3.6"

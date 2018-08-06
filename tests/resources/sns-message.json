@@ -1,0 +1,12 @@
+{
+  "Type": "Notification",
+  "MessageId": "712b3668-974b-5a51-8a80-65b68af0b052",
+  "TopicArn": "arn:aws:sns:eu-central-1:677740320946:datalake_input_bwe2",
+  "Subject": "Test",
+  "Message": "{\"insert_redshift_job\": {\"s3_path\": \"s3://europace.datalake.input/pep/abc.json\", \"target_db_table\": \"ingdiba_scoring\", \"target_db_schema\": \"dna\"}, \"metadata\": {\"data_timestamp\": \"2009-06-30T16:43:16,2345+02:00\", \"stage\": \"dev\", \"input_request_id\": \"req0815\", \"source_id\": \"pep_me\", \"description\": \"string\", \"schema_location\": \"string\", \"identifiers\": {\"vorgangsnummer\": \"VS1234/1/2\", \"me_request_id\": \"123124124124124124\"}, \"tags\": [\"ingdiba\", \"scoring\", \"marketengine\", \"angebotspr\\u00fcfung\"]}}",
+  "Timestamp": "2018-08-03T09:08:11.691Z",
+  "SignatureVersion": "1",
+  "Signature": "XCB1WKh0QIdQs1/iMdexl3BRTli0azMjPWrf0ziAXIs7hr+9UbYs01uftlN4/O6zaEjGGJupBOpc9mhzLNExIM0ckHyXOHCmjYLCOsKKFlxkA2mwuYKwEssfD8xxWkNqussvg7EDaY7HhCHJ4XM2wdU9DrmzaNxaYSGuzzIkI/+ClR84uU2yK93FebnRbzFrGOKAO0D6bZn41pbb7qUWwj7rTH3uQpNsoCNzBf8PyJXxWi6mib/5ongSFfVpnzCqno03nHNqVjuBXFer2gKuDaVN1kIhuSLJtc930uFzbJ8j0QqSxFDgUvp+Kyt0ZPnXDS6zMzepMaqwuIXx0toKSA==",
+  "SigningCertURL": "https://sns.eu-central-1.amazonaws.com/SimpleNotificationService-ac565b8b1a6c5d002d285f9598aa1d9b.pem",
+  "UnsubscribeURL": "https://sns.eu-central-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-central-1:677740320946:datalake_input_bwe2:9d53a4d7-8664-4a28-9b0a-fc921cfe8b09"
+}
