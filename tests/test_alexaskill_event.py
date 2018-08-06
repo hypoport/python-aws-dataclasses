@@ -17,7 +17,7 @@ def alexa_event(alexa_event_raw):
 
 def test_alexa_skill(alexa_event):
     evt = alexa_event
-    assert evt.event_version == "1.0"
+    assert evt.version == "1.0"
     assert evt.request is not None
     assert evt.session is not None
     assert evt.context is not None
