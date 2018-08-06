@@ -16,7 +16,8 @@ setup(
     packages=find_packages(exclude=["tests"]),
 
     install_requires=['docutils>=0.3',
-                      'dataclasses>=0.6'],
+                      'dataclasses>=0.6',
+                      'arrow>=0.11.0'],
 
     package_data={
         '': ['*.txt', '*.rst', '*.md']
