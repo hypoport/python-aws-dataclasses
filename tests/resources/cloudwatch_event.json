@@ -1,0 +1,89 @@
+{
+  "version": "0",
+  "id": "9abea4c9-79cd-f4e9-4826-e2bd59590b5c",
+  "detail-type": "Batch Job State Change",
+  "source": "aws.batch",
+  "account": "1234567890",
+  "time": "2018-09-05T04:09:49Z",
+  "region": "eu-central-1",
+  "resources": [
+    "arn:aws:batch:eu-central-1:1234567890:job/6882ce8d-359c-427b-834f-331158e5d093"
+  ],
+  "detail": {
+    "jobName": "TestJob",
+    "jobId": "6882ce8d-359c-427b-834f-331158e5d093",
+    "jobQueue": "arn:aws:batch:eu-central-1:1234567890:job-queue/LowPriority",
+    "status": "FAILED",
+    "attempts": [
+      {
+        "container": {
+          "containerInstanceArn": "arn:aws:ecs:eu-central-1:1234567890:container-instance/2a7a92e1-2366-45bb-b7b3-13744dc3600e",
+          "taskArn": "arn:aws:ecs:eu-central-1:1234567890:task/e6cba8d9-953d-4398-b31f-79fc8917f690",
+          "exitCode": 1,
+          "logStreamName": "TestJob/default/e6cba8d9-953d-4398-b31f-79fc8917f690"
+        },
+        "startedAt": 1536120182446,
+        "stoppedAt": 1536120313655,
+        "statusReason": "Essential container in task exited"
+      },
+      {
+        "container": {
+          "containerInstanceArn": "arn:aws:ecs:eu-central-1:1234567890:container-instance/2a7a92e1-2366-45bb-b7b3-13744dc3600e",
+          "taskArn": "arn:aws:ecs:eu-central-1:1234567890:task/daf877c1-a477-468c-bafd-7ee1dc87c602",
+          "exitCode": 1,
+          "logStreamName": "TestJob/default/daf877c1-a477-468c-bafd-7ee1dc87c602"
+        },
+        "startedAt": 1536120320516,
+        "stoppedAt": 1536120452900,
+        "statusReason": "Essential container in task exited"
+      },
+      {
+        "container": {
+          "containerInstanceArn": "arn:aws:ecs:eu-central-1:1234567890:container-instance/2a7a92e1-2366-45bb-b7b3-13744dc3600e",
+          "taskArn": "arn:aws:ecs:eu-central-1:1234567890:task/c44c626d-2667-4880-84c9-a397a7f9e785",
+          "exitCode": 1,
+          "logStreamName": "TestJob/default/c44c626d-2667-4880-84c9-a397a7f9e785"
+        },
+        "startedAt": 1536120457126,
+        "stoppedAt": 1536120588113,
+        "statusReason": "Essential container in task exited"
+      }
+    ],
+    "statusReason": "Essential container in task exited",
+    "createdAt": 1536120031010,
+    "retryStrategy": {
+      "attempts": 3
+    },
+    "startedAt": 1536120457126,
+    "stoppedAt": 1536120588113,
+    "dependsOn": [],
+    "jobDefinition": "arn:aws:batch:eu-central-1:1234567890:job-definition/TestJob:2",
+    "parameters": {},
+    "container": {
+      "image": "1234567890.dkr.ecr.eu-central-1.amazonaws.com/testjob:latest",
+      "vcpus": 2,
+      "memory": 256,
+      "command": [
+        "python",
+        "-m",
+        "redshift_anonymizer.main"
+      ],
+      "jobRoleArn": "arn:aws:iam::1234567890:role/service/RedshiftAnonymizerJob-BatchJob-dev",
+      "volumes": [],
+      "environment": [
+        {
+          "name": "STAGE",
+          "value": "dev"
+        }
+      ],
+      "mountPoints": [],
+      "readonlyRootFilesystem": true,
+      "ulimits": [],
+      "privileged": false,
+      "exitCode": 1,
+      "containerInstanceArn": "arn:aws:ecs:eu-central-1:1234567890:container-instance/2a7a92e1-2366-45bb-b7b3-13744dc3600e",
+      "taskArn": "arn:aws:ecs:eu-central-1:1234567890:task/c44c626d-2667-4880-84c9-a397a7f9e785",
+      "logStreamName": "TestJob/default/c44c626d-2667-4880-84c9-a397a7f9e785"
+    }
+  }
+}
