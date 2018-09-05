@@ -1,6 +1,8 @@
 from collections import namedtuple
+from datetime import datetime
 from typing import Dict, List
 
+import arrow
 from dataclasses import dataclass, field, InitVar
 
 from aws_dataclasses.base import GenericDataClass, EventClass
@@ -16,7 +18,7 @@ def _parse_message_attributes(attrs):
 @dataclass
 class SnsMessage(GenericDataClass):
     signature_version: str = field(init=False)
-    timestamp: str = field(init=False)
+    timestamp: datetime = field(init=False)
     signature: str = field(init=False)
     subject: str = field(init=False)
     message_id: str = field(init=False)
@@ -46,7 +48,7 @@ class SnsMessage(GenericDataClass):
         self.topic_arn = TopicArn
         self.type = Type
         self.unsubscribe_url = UnsubscribeUrl
-        self.timestamp = Timestamp
+        self.timestamp = arrow.get(Timestamp).datetime
         self.message = Message
         self.message_id = MessageId
         self.subject = Subject

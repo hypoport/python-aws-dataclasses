@@ -1,4 +1,7 @@
+import datetime
+
 import pytest
+from dateutil.tz import tzutc
 
 from aws_dataclasses.sns_event import SnsEvent, SnsMessage
 
@@ -26,6 +29,7 @@ def test_sns(sns_event):
     assert sns_event.first_record.sns is not None
     sns = sns_event.first_record.sns
     assert sns.message == "Hello from SNS!"
+    assert sns.timestamp == datetime.datetime(1970, 1, 1, 0, 0, tzinfo=tzutc())
     assert sns.topic_arn == "arn:aws:sns:EXAMPLE"
     assert sns.signature == "EXAMPLE"
 
