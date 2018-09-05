@@ -30,3 +30,7 @@ Release History
 **Improvements**
 * reimplementation using dataclasses
 * refactor tests to using pytest
+
+## 0.3.0 (2018-09-05)
+
+* implements support for CloudWatch Events
