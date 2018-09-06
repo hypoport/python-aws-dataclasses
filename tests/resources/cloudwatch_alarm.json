@@ -1,0 +1,29 @@
+{
+  "AlarmName": "TestAlarm",
+  "AlarmDescription": "zZt ist der JWT  für den Abruf im PM nur 30min gültig => dies kann zu 403 führen",
+  "AWSAccountId": "677740320946",
+  "NewStateValue": "ALARM",
+  "NewStateReason": "Threshold Crossed: 1 out of the last 1 datapoints [3.0 (05/09/18 07:09:00)] was greater than the threshold (0.0) (minimum 1 datapoint for OK -> ALARM transition).",
+  "StateChangeTime": "2018-09-05T07:14:44.013+0000",
+  "Region": "EU (Frankfurt)",
+  "OldStateValue": "INSUFFICIENT_DATA",
+  "Trigger": {
+    "MetricName": "4XXError",
+    "Namespace": "AWS/ApiGateway",
+    "StatisticType": "Statistic",
+    "Statistic": "SUM",
+    "Unit": null,
+    "Dimensions": [
+      {
+        "name": "ApiName",
+        "value": "prod-Dwh-Rohdatendownload"
+      }
+    ],
+    "Period": 300,
+    "EvaluationPeriods": 1,
+    "ComparisonOperator": "GreaterThanThreshold",
+    "Threshold": 0.0,
+    "TreatMissingData": "",
+    "EvaluateLowSampleCountPercentile": ""
+  }
+}
