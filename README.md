@@ -1,5 +1,6 @@
 Python-AWS-Dataclasses [WIP]
 ===========
+[![Codecov](https://img.shields.io/codecov/c/github/hypoport/python-aws-dataclasses.svg)](https://github.com/hypoport/python-aws-dataclasses)
 
 Python-AWS-Dataclasses provides data-classes for AWS lambda events
 
