@@ -1,0 +1,29 @@
+{
+  "FunctionName": "test",
+  "FunctionArn": "arn:aws:lambda:eu-central-1:0123456789:function:test",
+  "Runtime": "python3.6",
+  "Role": "arn:aws:iam::0123456789:role/test-role",
+  "Handler": "main.lambda_handler",
+  "CodeSize": 30280933,
+  "Description": "I am a description.",
+  "Timeout": 300,
+  "MemorySize": 3008,
+  "LastModified": "2018-09-11T07:45:58.641+0000",
+  "CodeSha256": "ucRYwmrtivyiEicBTcxbPvsmPWw0Sy6LAWuTPvjWX1g=",
+  "Version": "$LATEST",
+  "Environment": {
+    "Variables": {
+      "S3_BUCKET": "testbucket",
+      "STAGE": "prod"
+    }
+  },
+  "VpcConfig": {
+    "SubnetIds": ["a", "b"],
+    "SecurityGroupIds": [],
+    "VpcId": "1234"
+  },
+  "TracingConfig": {
+    "Mode": "PassThrough"
+  },
+  "RevisionId": "beee94f5-9d0a-4d5f-872c-e317c3fb12e9"
+}
