@@ -34,6 +34,7 @@ class CloudWatchAlarmTrigger(GenericDataClass):
     treat_missing_data: str = field(init=False)
     evaluate_low_samplecount_percentile: str = field(init=False)
 
+
     def __post_init__(self, MetricName: str, Namespace: str, StatisticType: str, Statistic: str, Dimensions: List[Dict],
                       Period: int, EvaluationPeriods: int, ComparisonOperator: str, Threshold: float,
                       TreatMissingData: str, EvaluateLowSampleCountPercentile: str, Unit: str):
