@@ -19,7 +19,7 @@ class CloudWatchAlarmTrigger(GenericDataClass):
     ComparisonOperator: InitVar[str] = field(repr=False)
     Threshold: InitVar[float] = field(repr=False)
     TreatMissingData: InitVar[str] = field(repr=False)
-    EvaluateLowSampleCountPercentile: InitVar[str] = field(repr=False)
+    EvaluateLowSampleCountPercentile: InitVar[str] = field(repr=False, default=None)
     Unit: InitVar[str] = field(repr=False, default=None)
     metric_name: str = field(init=False)
     namespace: str = field(init=False)
