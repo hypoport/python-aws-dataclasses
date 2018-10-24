@@ -29,7 +29,8 @@ def test_sns(sns_event):
     assert sns_event.first_record.sns is not None
     sns = sns_event.first_record.sns
     assert sns.message == "Hello from SNS!"
-    assert sns.timestamp == datetime.datetime(1970, 1, 1, 0, 0, tzinfo=tzutc())
+    assert sns.timestamp == datetime.datetime(1970, 1, 1, 0, 0, 12, tzinfo=tzutc())
+    assert int(sns.timestamp.timestamp()) == 12
     assert sns.topic_arn == "arn:aws:sns:EXAMPLE"
     assert sns.signature == "EXAMPLE"
 

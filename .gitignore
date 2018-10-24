@@ -122,3 +122,4 @@ venv.bak/
 /.pytest_cache/
 /coverage_html_report/
 report.xml
+.vscode/

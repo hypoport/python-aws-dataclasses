@@ -1,0 +1,32 @@
+[build-system]
+requires = ["flit"]
+build-backend = "flit.buildapi"
+
+[tool.flit.metadata]
+module = "aws_dataclasses"
+dist-name = "python-aws-dataclasses"
+author = "Benjamin Weigel"
+author-email = "benjamin.weigel@europace.de"
+home-page = "https://github.com/hypoport/python-aws-dataclasses"
+classifiers = [ 
+    "License :: OSI Approved :: MIT License",
+    'Development Status :: 4 - Beta',
+    'Programming Language :: Python'
+            ]
+
+keywords="aws lambda events"
+
+requires=[  'docutils>=0.3',
+            'dataclasses>=0.6',
+            'arrow>=0.11.0'
+        ]
+requires-python='>=3.6'
+
+description-file='README.md'
+
+[tool.flit.metadata.requires-extra]
+test = [
+    "pytest >=2.7.3",
+    "pytest-runner",
+]
+doc = ["sphinx"]

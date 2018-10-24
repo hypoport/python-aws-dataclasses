@@ -13,14 +13,14 @@ class CloudWatchAlarmTrigger(GenericDataClass):
     Namespace: InitVar[str] = field(repr=False)
     StatisticType: InitVar[str] = field(repr=False)
     Statistic: InitVar[str] = field(repr=False)
-    Unit: InitVar[str] = field(repr=False)
     Dimensions: InitVar[List[Dict]] = field(repr=False)
     Period: InitVar[int] = field(repr=False)
     EvaluationPeriods: InitVar[int] = field(repr=False)
     ComparisonOperator: InitVar[str] = field(repr=False)
     Threshold: InitVar[float] = field(repr=False)
     TreatMissingData: InitVar[str] = field(repr=False)
-    EvaluateLowSampleCountPercentile: InitVar[str] = field(repr=False)
+    EvaluateLowSampleCountPercentile: InitVar[str] = field(repr=False, default=None)
+    Unit: InitVar[str] = field(repr=False, default=None)
     metric_name: str = field(init=False)
     namespace: str = field(init=False)
     statistic_type: str = field(init=False)
@@ -34,9 +34,10 @@ class CloudWatchAlarmTrigger(GenericDataClass):
     treat_missing_data: str = field(init=False)
     evaluate_low_samplecount_percentile: str = field(init=False)
 
-    def __post_init__(self, MetricName: str, Namespace: str, StatisticType: str, Statistic: str, Unit: str,
-                      Dimensions: List[Dict], Period: int, EvaluationPeriods: int, ComparisonOperator: str,
-                      Threshold: float, TreatMissingData: str, EvaluateLowSampleCountPercentile: str):
+
+    def __post_init__(self, MetricName: str, Namespace: str, StatisticType: str, Statistic: str, Dimensions: List[Dict],
+                      Period: int, EvaluationPeriods: int, ComparisonOperator: str, Threshold: float,
+                      TreatMissingData: str, EvaluateLowSampleCountPercentile: str, Unit: str):
         self.metric_name = MetricName
         self.namespace = Namespace
         self.statistic_type = StatisticType
