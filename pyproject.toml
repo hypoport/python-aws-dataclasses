@@ -1,0 +1,20 @@
+[build-system]
+requires = ["flit"]
+build-backend = "flit.buildapi"
+
+[tool.flit.metadata]
+module = "aws_dataclasses"
+author = "Benjamin Weigel"
+author-email = "benjamin.weigel@europace.de"
+home-page = "https://github.com/hypoport/python-aws-dataclasses"
+classifiers = [ 
+    "License :: OSI Approved :: MIT License",
+    'Development Status :: 4 - Beta',
+    'Programming Language :: Python'
+            ]
+
+
+requires=['dataclasses (>=0.6)']
+requires-python='>=3.6'
+
+description-file='README.md'
