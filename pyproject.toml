@@ -11,7 +11,9 @@ home-page = "https://github.com/hypoport/python-aws-dataclasses"
 classifiers = [ 
     "License :: OSI Approved :: Apache Software License",
     'Development Status :: 4 - Beta',
-    'Programming Language :: Python'
+    'Intended Audience :: Developers',
+    'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7'
             ]
 
 keywords="aws lambda events"
