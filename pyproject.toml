@@ -9,7 +9,7 @@ author = "Benjamin Weigel"
 author-email = "benjamin.weigel@europace.de"
 home-page = "https://github.com/hypoport/python-aws-dataclasses"
 classifiers = [ 
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
     'Development Status :: 4 - Beta',
     'Programming Language :: Python'
             ]

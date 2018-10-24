@@ -1,6 +1,6 @@
 Python-AWS-Dataclasses [WIP]
 ===========
-[![Codecov](https://img.shields.io/codecov/c/github/hypoport/python-aws-dataclasses.svg)](https://github.com/hypoport/python-aws-dataclasses)
+[![Codecov](https://img.shields.io/codecov/c/github/hypoport/python-aws-dataclasses.svg)](https://github.com/hypoport/python-aws-dataclasses) ![GitHub](https://img.shields.io/github/license/hypoport/python-aws-dataclasses.svg) [![PyPI](https://img.shields.io/pypi/v/python-aws-dataclasses.svg)](https://pypi.org/project/python-aws-dataclasses/) [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/python-aws-dataclasses.svg)](https://pypi.org/project/python-aws-dataclasses/)
 
 Python-AWS-Dataclasses provides data-classes for AWS lambda events and other AWS data.
 The dataclasses are type-annotated, as to allow for full IDE (code completion / IntelliSense) support.
