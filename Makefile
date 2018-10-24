@@ -25,10 +25,7 @@ coverage:
 	pipenv run pytest --cov-config .coveragerc --verbose --cov-report term --cov-report xml --cov=aws_dataclasses tests
 
 publish:
-	pip install 'twine>=1.5.0'
-	python setup.py sdist bdist_wheel
-	twine upload dist/*
-	rm -fr build dist .egg requests.egg-info
+	flit --repository testpypi publish
 
 docs:
 	cd docs && make html
