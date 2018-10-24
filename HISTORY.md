@@ -38,3 +38,11 @@ Release History
 ## 0.4.0 (2018-09-06)
 
 * implements support for CloudWatch Alarms
+
+## 0.4.1 (2018-10-24)
+
+* adds `pyproject.toml` and `flit` support for publishing to pypi
+
+## 0.4.2 (2018-10-24)
+
+* updates README.md
