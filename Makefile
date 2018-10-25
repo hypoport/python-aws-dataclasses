@@ -11,6 +11,9 @@ test-all:
 	# This runs all of the tests, on both Python 2 and Python 3.
 	detox
 
+check:
+	mypy -p aws_dataclasses
+
 ci:
 	pipenv run pytest --junitxml=report.xml
 

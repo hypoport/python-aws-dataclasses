@@ -11,13 +11,21 @@ script:
 cache: pip
 jobs:
   include:
+    - stage: check
+      script:
+        - make check
+      python: 
+        - '3.6'
     - stage: test
       script:
         - make test-metadata
         - make ci
-      python: '3.6'
+      python: 
+        - '3.6'
+        - '3.7'
+        - '3.7-dev'
     - stage: coverage
-      python: 3.6
+      python: '3.6'
       script:
         - make coverage
         - codecov
