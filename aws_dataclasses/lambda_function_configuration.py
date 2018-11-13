@@ -4,10 +4,7 @@ from typing import Dict, Any, List
 import arrow
 from dataclasses import dataclass, InitVar, field
 
-from aws_dataclasses.util import get_logger
 from aws_dataclasses.base import GenericDataClass
-
-LOG = get_logger(__name__)
 
 
 @dataclass
