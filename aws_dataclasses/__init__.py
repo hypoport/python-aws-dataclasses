@@ -2,7 +2,7 @@
 python-aws-dataclasses
 """
 
-__version__="0.4.3"
+__version__="0.4.4"
 
 from aws_dataclasses.sns_event import SnsEvent
 from aws_dataclasses.alexa_skill_event import AlexaSkillEvent
