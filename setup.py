@@ -15,8 +15,7 @@ setup(
     version="0.4.0",
     packages=find_packages(exclude=["tests"]),
 
-    install_requires=['docutils>=0.3',
-                      'dataclasses>=0.6',
+    install_requires=['dataclasses>=0.6',
                       'arrow>=0.11.0'],
 
     package_data={
