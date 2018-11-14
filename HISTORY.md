@@ -46,3 +46,8 @@ Release History
 ## 0.4.2 (2018-10-24)
 
 * updates README.md
+
+## 0.4.4 (2018-11-14)
+
+* removes unneeded dependencies
+* removes unused logger
