@@ -8,7 +8,7 @@ dist-name = "python-aws-dataclasses"
 author = "Benjamin Weigel"
 author-email = "benjamin.weigel@europace.de"
 home-page = "https://github.com/hypoport/python-aws-dataclasses"
-classifiers = [ 
+classifiers = [
     "License :: OSI Approved :: Apache Software License",
     'Development Status :: 4 - Beta',
     'Intended Audience :: Developers',
@@ -18,8 +18,7 @@ classifiers = [
 
 keywords="aws lambda events"
 
-requires=[  'docutils>=0.3',
-            'dataclasses>=0.6',
+requires=[  "dataclasses>=0.6; python_version == '3.6'",
             'arrow>=0.11.0'
         ]
 requires-python='>=3.6'
