@@ -23,7 +23,7 @@ Release History
 
 ## 0.1.0 (2018-08-03)
 
-* rename package to make it more relatable 
+* rename package to make it more relatable
 
 ## 0.2.0 (2018-08-06)
 
@@ -51,3 +51,7 @@ Release History
 
 * removes unneeded dependencies
 * removes unused logger
+
+## 0.4.5 (2018-12-03)
+
+* updates requirements for compatibility with Python 3.7
