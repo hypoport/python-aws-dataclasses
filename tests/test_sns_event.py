@@ -1,3 +1,4 @@
+import copy
 import datetime
 
 import pytest
@@ -42,7 +43,7 @@ def test_message_attributes(sns_event):
 
 
 def test_can_handle_missing_fields(sns_event_raw):
-    sns = sns_event_raw["Records"][0]["Sns"]
+    sns = copy.deepcopy(sns_event_raw["Records"][0]["Sns"])
     sns.pop("MessageAttributes")
     res = SnsMessage.from_json(sns)
     assert res.message_attributes is None
